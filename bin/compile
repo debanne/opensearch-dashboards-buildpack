@@ -21,7 +21,12 @@ source "${buildpack_dir}/VERSIONS"
 # version=2.19.1
 version="${OPENSEARCH_DASHBOARDS_VERSION:-"${OPENSEARCH_DASHBOARDS_DEFAULT_VERSION}"}"
 
-opensearch_gpg_key_url="https://artifacts.opensearch.org/publickeys/opensearch.pgp"
+major_version="${version%%.*}"
+if [ "$major_version" -le 2 ]; then
+	opensearch_gpg_key_url="https://artifacts.opensearch.org/publickeys/opensearch.pgp"
+else
+	opensearch_gpg_key_url="https://artifacts.opensearch.org/publickeys/opensearch-release.pgp"
+fi
 gpg_key_path="${tmp_dir}/opensearch.gpg"
 
 archive="opensearch-dashboards-${version}.tar.gz"
